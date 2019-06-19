@@ -1,0 +1,56 @@
+from apps.books_authors_app.models import *
+
+Book.objects.create(title="C Sharp")
+Book.objects.create(title="Java")
+Book.objects.create(title="Python")
+Book.objects.create(title="PHP")
+Book.objects.create(title="Ruby")
+
+Author.objects.create(first_name="Jane", last_name="Austen")
+Author.objects.create(first_name="Emily", last_name="Dickinson")
+Author.objects.create(first_name="Fyodor", last_name="Dostoevsky")
+Author.objects.create(first_name="William", last_name="Shakespeare")
+Author.objects.create(first_name="Lau", last_name="Tzu")
+
+python manage.py makemigrations
+1 #creating a one-off default value
+'note about the author' #the above mentioned one-off
+python manage.py migrate
+
+book_to_edit = Book.objects.get(title="C Sharp")
+book_to_edit.title = "C#"
+book_to_edit.save()
+
+author_to_edit = Author.objects.get(id=4)
+author_to_edit.first_name = "Bill"
+author_to_edit.save()
+
+author_to_edit = Author.objects.get(id=1)
+author_to_edit.books.add(Book.objects.get(id=1), Book.objects.get(id=2))
+author_to_edit.save()
+
+author_to_edit = Author.objects.get(id=2)
+books_to_add = Book.objects.filter(id__lte=3)
+for book in books_to_add:
+    author_to_edit.books.add(book)
+author_to_edit.save()
+
+author_to_edit = Author.objects.get(id=3)
+books_to_add = Book.objects.filter(id__lte=4)
+for book in books_to_add:
+    author_to_edit.books.add(book)
+author_to_edit.save()
+
+author_to_edit = Author.objects.get(id=4)
+books_to_add = Book.objects.filter(id__lte=5)
+for book in books_to_add:
+    author_to_edit.books.add(book)
+author_to_edit.save()
+
+Book.objects.get(id=3).authors.remove(Book.objects.get(id=3).authors.first())
+
+Book.objects.get(id=2).authors.add(Author.objects.get(id=5))
+
+Author.objects.get(id=3).books.values()
+
+Book.objects.get(id=5).authors.values()
